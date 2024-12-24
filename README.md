@@ -21,25 +21,3 @@ Before building the project, you must install the 'risc0' toolchain. You can ins
    cargo run --bin host 
    ```
 
-## File Descriptions
-- `main.rs`: Contains the main logic for range proofs for big integers using zkVM.
-- `build.rs`: Script that automates the build process for the guest environment.
-- `rust-toolchain.toml`: Ensures a consistent Rust version and toolchain are used across all environments to avoid compatibility issues.
-
-
-## Structure
-```plaintext
-BIGINTRANGEPROOF
-├── host
-│   ├── src    
-│   │   └── main.rs           
-│   └── Cargo.toml            
-├── methods
-│   ├── guest
-│   │   └── src
-│   │       ├── build.rs       
-│   │       └── Cargo.toml           
-│   └── Cargo.toml             
-├── README.md                 
-└── rust-toolchain.toml       
-```
