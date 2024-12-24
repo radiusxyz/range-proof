@@ -18,7 +18,7 @@ Before building the project, you must install the 'risc0' toolchain. You can ins
 
 ### Run the host application:
    ```bash
-   cargo run --release
+   cargo run --bin host 
    ```
 
 ## File Descriptions
