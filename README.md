@@ -18,7 +18,7 @@ Before building the project, you must install the 'risc0' toolchain. You can ins
    rzup install
    ```
    
-### Build the project:
+### Run the project:
    ```bash
    cargo build --release
    ```

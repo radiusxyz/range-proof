@@ -22,9 +22,9 @@ pub fn main() {
 
     let calculation = base.modpow(&exponent, &modulus);
 
-    println!("Guest::Base: {:?}", base);
-    println!("Guest::Modulus: {:?}", modulus);
-    println!("Guest::Range: {:?}", range);
+    // println!("Guest::Base: {:?}", base);
+    // println!("Guest::Modulus: {:?}", modulus);
+    // println!("Guest::Range: {:?}", range);
     println!("Guest::Calculation: {:?}", calculation);
 
     if result != calculation {
