@@ -13,18 +13,17 @@ brew install ninja
 
 ### Install the risc0 toolchain
 Before building the project, you must install the 'risc0' toolchain. You can install it using `rzup` as follows:
-   ```bash
-   curl -L https://risczero.com/install | bash
-   rzup install
-   ```
-   
+```bash
+curl -L https://risczero.com/install | bash
+rzup install
+```
+For detailed installation instructions, refer to the official documentation: [RISC Zero zkVM Installation Guide](https://dev.risczero.com/api/zkvm/install)
+
 ### Run the project:
-   ```bash
-   cargo build --release
-   ```
+```bash
+cargo run --release
+```
 
 ### Run the host application:
-   ```bash
-   cargo run --bin host 
-   ```
-
+```bash
+cargo run --bin host --release
