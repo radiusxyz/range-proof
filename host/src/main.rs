@@ -1,7 +1,9 @@
-use common::{Input};
+use common::Input;
 use methods::{RANGE_PROOF_ELF, RANGE_PROOF_ID};
 use num_bigint::BigUint;
-use risc0_zkvm::{default_prover, ExecutorEnv, ProveInfo, Receipt};
+use risc0_zkvm::{
+    get_prover_server, ExecutorEnv, ExecutorImpl, ProveInfo, ProverOpts, Receipt, VerifierContext,
+};
 use std::time::Instant;
 
 fn main() {
@@ -24,15 +26,15 @@ fn main() {
 }
 
 fn setup_inputs() -> (BigUint, BigUint, BigUint, BigUint) {
-    let input = Input::default();
+    let input = Input::new_default();
 
-    println!("Host::Initial Base: {}", input.base);
-    println!("Host::Initial Modulus: {}", input.modulus);
-    println!("Host::Initial Range: {}", input.range);
-    println!(
-        "Host::Initial Result of base^exponent % modulus: {}",
-        input.result
-    );
+    // println!("Host::Initial Base: {}", input.base);
+    // println!("Host::Initial Modulus: {}", input.modulus);
+    // println!("Host::Initial Range: {}", input.range);
+    // println!(
+    //     "Host::Initial Result of base^exponent % modulus: {}",
+    //     input.result
+    // );
 
     (input.base, input.modulus, input.range, input.result)
 }
@@ -57,9 +59,18 @@ fn setup_env<'a>(
 }
 
 fn generate_proof(env: ExecutorEnv) -> ProveInfo {
+    let mut exec = ExecutorImpl::from_elf(env, RANGE_PROOF_ELF).unwrap();
+    let exec_start = Instant::now();
+    let session = exec.run().unwrap();
+    let exec_duration = exec_start.elapsed();
+    println!("Session execution completed in {:?}", exec_duration);
+
+    let prover = get_prover_server(&ProverOpts::fast()).unwrap();
+    let ctx = VerifierContext::default();
+
     println!("Starting proof generation...");
     let proof_start = Instant::now();
-    let prove_info = default_prover().prove(env, RANGE_PROOF_ELF).unwrap();
+    let prove_info = prover.prove_session(&ctx, &session).unwrap();
     let proof_duration = proof_start.elapsed();
     println!("Proof generation completed in {:?}", proof_duration);
     prove_info
@@ -68,9 +79,7 @@ fn generate_proof(env: ExecutorEnv) -> ProveInfo {
 fn verify_proof(receipt: &Receipt) {
     println!("Starting verification...");
     let verify_start = Instant::now();
-
     receipt.verify(RANGE_PROOF_ID).unwrap();
-
     let verify_duration = verify_start.elapsed();
     println!("Verification completed in {:?}", verify_duration);
 

@@ -1,11 +1,12 @@
 use num_bigint::BigUint;
 use num_traits::identities::Zero;
 use std::str::FromStr;
-
-pub const MODULUS: &str = "8155133734070055735139271277173718200941522166153710213522626777763679009805792017274916613411023848268056376687809186180768200590914945958831360737612803";
+// MODULUS is 2048 mod / number of sequencers for skde
+pub const MODULUS: &str = "109108784166676529682340577929498188950239585527883687884827626040722072371127456712391033422811328348170518576414206624244823392702116014678887602655605057984874271545556188865755301275371611259397284800785551682318694176857633188036311000733221068448165870969366710007572931433736793827320953175136545355129";
 pub const BASE: &str = "4";
-pub const RANGE: &str = "801983492846582734029851093470192831";
-pub const EXPONENT: &str = "239586239580923";
+pub const RANGE: &str =
+    "54228695914669666723440166889041962662973721213812451561550491637090461709551";
+pub const EXPONENT: &str = "462000193083985684610660351369692616274581519034636217798321";
 
 #[derive(serde::Serialize, serde::Deserialize)]
 pub struct Input {
@@ -17,7 +18,7 @@ pub struct Input {
 
 impl Input {
     // Constructor using default constants
-    pub fn default() -> Self {
+    pub fn new_default() -> Self {
         Self::new(BASE, MODULUS, RANGE)
     }
 
@@ -32,7 +33,7 @@ impl Input {
         } else {
             Self::calculate_private_modular_exponentiation(&base, &modulus)
         };
-        
+
         println!("Initial parameter settings");
         println!("Base: {}", base);
         println!("Modulus: {}", modulus);
