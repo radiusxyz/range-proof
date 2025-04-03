@@ -9,6 +9,7 @@ On Mac:
 ```
 brew install cmake
 brew install ninja
+xcode-select --install
 ```
 
 ### Install the risc0 toolchain

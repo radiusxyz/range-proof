@@ -14,12 +14,9 @@ fn main() {
     // Generate proof and get receipt
     let receipt = generate_proof(env).receipt;
 
-    let input: Input = receipt.journal.decode().unwrap();
+    let u: BigUint = receipt.journal.decode().unwrap();
 
-    println!("Host::Base: {}", input.base);
-    println!("Host::Modulus: {}", input.modulus);
-    println!("Host::Range: {}", input.range);
-    println!("Host::Result: {}", input.result);
+    println!("u: {}", u);
 
     // Verify the proof
     verify_proof(&receipt);
@@ -27,14 +24,6 @@ fn main() {
 
 fn setup_inputs() -> (BigUint, BigUint, BigUint, BigUint) {
     let input = Input::new_default();
-
-    // println!("Host::Initial Base: {}", input.base);
-    // println!("Host::Initial Modulus: {}", input.modulus);
-    // println!("Host::Initial Range: {}", input.range);
-    // println!(
-    //     "Host::Initial Result of base^exponent % modulus: {}",
-    //     input.result
-    // );
 
     (input.base, input.modulus, input.range, input.result)
 }
@@ -65,6 +54,9 @@ fn generate_proof(env: ExecutorEnv) -> ProveInfo {
     let exec_duration = exec_start.elapsed();
     println!("Session execution completed in {:?}", exec_duration);
 
+    // Recursive proving, fast verification
+    // let prover = get_prover_server(&ProverOpts::succinct()).unwrap();
+    // Fast proving, slow verification
     let prover = get_prover_server(&ProverOpts::fast()).unwrap();
     let ctx = VerifierContext::default();
 
