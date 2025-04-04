@@ -26,5 +26,5 @@ pub fn main() {
 
     println!("Guest::Calculation: {:?}", calculation);
 
-    env::commit(&(calculation));
+    env::commit(&(base, modulus, range, calculation));
 }
