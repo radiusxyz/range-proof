@@ -11,6 +11,7 @@ pub const EXPONENT: &str = "4620001930839856846106603513696926162745815190346362
 pub struct Input {
     pub base: BigUint,
     pub modulus: BigUint,
+    pub exponent: BigUint,
     pub range: BigUint,
 }
 
@@ -25,15 +26,15 @@ pub struct Output {
 impl Input {
     // Constructor using default constants
     pub fn new_default() -> Self {
-        Self::new(BASE, MODULUS, RANGE)
+        Self::new(BASE, MODULUS, RANGE, EXPONENT)
     }
 
     // Constructor that allows custom input
-    pub fn new(base_str: &str, modulus_str: &str, range_str: &str) -> Self {
+    pub fn new(base_str: &str, modulus_str: &str, range_str: &str, exponent_str: &str) -> Self {
         let base = BigUint::from_str(base_str).expect("Invalid number for Base");
         let modulus = BigUint::from_str(modulus_str).expect("Invalid number for Modulus");
         let range = BigUint::from_str(range_str).expect("Invalid number for Range");
-
+        let exponent = BigUint::from_str(exponent_str).expect("Invalid number for Exponent");
         println!("Initial parameter settings");
         println!("Base: {}", base);
         println!("Modulus: {}", modulus);
@@ -43,6 +44,7 @@ impl Input {
             base,
             modulus,
             range,
+            exponent,
         }
     }
 }

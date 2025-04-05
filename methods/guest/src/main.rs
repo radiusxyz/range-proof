@@ -11,6 +11,7 @@ pub fn main() {
     let base = input.base;
     let modulus = input.modulus;
     let range = input.range;
+    let exponent = input.exponent;
 
     let exponent = BigUint::from_str(EXPONENT).expect("Guest::Invalid number for Exponent");
     env::write(&exponent);

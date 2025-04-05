@@ -1,4 +1,4 @@
-use common::{Input, Output};
+use common::{Input, Output, EXPONENT};
 use methods::{RANGE_PROOF_ELF, RANGE_PROOF_ID};
 use num_bigint::BigUint;
 use risc0_zkvm::{
@@ -9,7 +9,7 @@ use std::time::Instant;
 fn main() {
     let input = setup_inputs();
 
-    let env = setup_env(&input.base, &input.modulus, &input.range);
+    let env = setup_env(&input.base, &input.modulus, &input.range, EXPONENT);
 
     // Generate proof and get receipt
     let receipt = generate_proof(env).receipt;
@@ -28,14 +28,21 @@ fn setup_inputs() -> Input {
         base: input.base,
         modulus: input.modulus,
         range: input.range,
+        exponent: input.exponent,
     }
 }
 
-fn setup_env<'a>(base: &'a BigUint, modulus: &'a BigUint, range: &'a BigUint) -> ExecutorEnv<'a> {
+fn setup_env<'a>(
+    base: &'a BigUint,
+    modulus: &'a BigUint,
+    exponent: &'a BigUint,
+    range: &'a BigUint,
+) -> ExecutorEnv<'a> {
     let input = Input {
         base: base.clone(),
         modulus: modulus.clone(),
         range: range.clone(),
+        exponent: exponent.clone(),
     };
 
     ExecutorEnv::builder()
