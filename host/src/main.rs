@@ -9,7 +9,7 @@ use std::time::Instant;
 fn main() {
     let input = setup_inputs();
 
-    let env = setup_env(&input.base, &input.modulus, &input.range, EXPONENT);
+    let env = setup_env(&input.base, &input.modulus, &input.exponent, &input.range);
 
     // Generate proof and get receipt
     let receipt = generate_proof(env).receipt;
@@ -41,8 +41,8 @@ fn setup_env<'a>(
     let input = Input {
         base: base.clone(),
         modulus: modulus.clone(),
-        range: range.clone(),
         exponent: exponent.clone(),
+        range: range.clone(),
     };
 
     ExecutorEnv::builder()

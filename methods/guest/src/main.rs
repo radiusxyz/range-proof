@@ -1,7 +1,5 @@
-use common::{Input, EXPONENT};
-use num_bigint::BigUint;
+use common::Input;
 use risc0_zkvm::guest::env;
-use std::str::FromStr;
 use std::{io::Read, vec::Vec};
 
 pub fn main() {
@@ -12,9 +10,6 @@ pub fn main() {
     let modulus = input.modulus;
     let range = input.range;
     let exponent = input.exponent;
-
-    let exponent = BigUint::from_str(EXPONENT).expect("Guest::Invalid number for Exponent");
-    env::write(&exponent);
 
     if exponent > range {
         panic!(
