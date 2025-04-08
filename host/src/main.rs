@@ -1,4 +1,4 @@
-use common::Input;
+use common::{Input, Output, EXPONENT};
 use methods::{RANGE_PROOF_ELF, RANGE_PROOF_ID};
 use num_bigint::BigUint;
 use risc0_zkvm::{
@@ -7,49 +7,42 @@ use risc0_zkvm::{
 use std::time::Instant;
 
 fn main() {
-    let (base, modulus, range, result) = setup_inputs();
+    let input = setup_inputs();
 
-    let env = setup_env(&base, &modulus, &range, &result);
+    let env = setup_env(&input.base, &input.modulus, &input.exponent, &input.range);
 
     // Generate proof and get receipt
     let receipt = generate_proof(env).receipt;
 
-    let input: Input = receipt.journal.decode().unwrap();
+    let output: Output = receipt.journal.decode().unwrap();
 
-    println!("Host::Base: {}", input.base);
-    println!("Host::Modulus: {}", input.modulus);
-    println!("Host::Range: {}", input.range);
-    println!("Host::Result: {}", input.result);
-
+    println!("u: {}, range: {}", output.u, output.range);
     // Verify the proof
     verify_proof(&receipt);
 }
 
-fn setup_inputs() -> (BigUint, BigUint, BigUint, BigUint) {
+fn setup_inputs() -> Input {
     let input = Input::new_default();
 
-    // println!("Host::Initial Base: {}", input.base);
-    // println!("Host::Initial Modulus: {}", input.modulus);
-    // println!("Host::Initial Range: {}", input.range);
-    // println!(
-    //     "Host::Initial Result of base^exponent % modulus: {}",
-    //     input.result
-    // );
-
-    (input.base, input.modulus, input.range, input.result)
+    Input {
+        base: input.base,
+        modulus: input.modulus,
+        range: input.range,
+        exponent: input.exponent,
+    }
 }
 
 fn setup_env<'a>(
     base: &'a BigUint,
     modulus: &'a BigUint,
+    exponent: &'a BigUint,
     range: &'a BigUint,
-    result: &'a BigUint,
 ) -> ExecutorEnv<'a> {
     let input = Input {
         base: base.clone(),
         modulus: modulus.clone(),
+        exponent: exponent.clone(),
         range: range.clone(),
-        result: result.clone(),
     };
 
     ExecutorEnv::builder()
@@ -65,6 +58,9 @@ fn generate_proof(env: ExecutorEnv) -> ProveInfo {
     let exec_duration = exec_start.elapsed();
     println!("Session execution completed in {:?}", exec_duration);
 
+    // Recursive proving, fast verification
+    // let prover = get_prover_server(&ProverOpts::succinct()).unwrap();
+    // Fast proving, slow verification
     let prover = get_prover_server(&ProverOpts::fast()).unwrap();
     let ctx = VerifierContext::default();
 
