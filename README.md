@@ -32,17 +32,17 @@ cargo run --bin host --release
 
 ### Troubleshooting
 
-If you encounter build errors related to the `risc0` toolchain (e.g., when using older versions like `v1.0.5`), please ensure the following:
+If you encounter build errors related to the `risc0` toolchain, please ensure the following:
 
-- Use the latest `risc0` version (`v2.0.1` or above)
+- Use the latest `risc0` version (`v1.2.6`)
 - Install Rust `1.86.0` via `rustup`
 - Update your `rzup`, `cargo-risczero`, and `r0vm` tools:
   ```bash
   rzup update
-  rzup install cargo-risczero 2.0.1
-  rzup install r0vm 2.0.1
-  rzup default cargo-risczero 2.0.1
-  rzup default r0vm 2.0.1
+  rzup install cargo-risczero 1.2.6
+  rzup install r0vm 1.2.6
+  rzup default cargo-risczero 1.2.6
+  rzup default r0vm 1.2.6
   ```
 - Clean previous builds:
   ```bash
